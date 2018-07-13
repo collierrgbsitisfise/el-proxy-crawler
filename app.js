@@ -1,6 +1,6 @@
 console.log('start parsing');
 const {
     parseHideMy
-} = require('./utils/hideMy.crawle');
+} = require('./utils/fooxTool.crawle');
 
-console.log(parseHideMy())
+parseHideMy()
