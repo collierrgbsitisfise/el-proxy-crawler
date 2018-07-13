@@ -1,6 +1,11 @@
-console.log('start parsing');
+// http://foxtools.ru/Proxy?page=2
+// https://free-proxy-list.net
+// https://free.proxy-sale.com/
 const {
-    parseHideMy
+    foxToolsRu
 } = require('./utils/fooxTool.crawle');
 
-parseHideMy()
+foxToolsRu()
+    .then(data => {
+        console.log(data);
+    })
