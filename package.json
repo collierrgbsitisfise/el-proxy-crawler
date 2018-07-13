@@ -1,0 +1,16 @@
+{
+  "name": "el-proxy-crawler",
+  "version": "0.0.1",
+  "description": "Scrape proxy",
+  "main": "app.js",
+  "author": "vadim.vicolaev.v@gmail.com",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "express": "latest",
+    "phantomjs": "^2.1.7",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2",
+    "simulate-browser": "^1.2.1",
+    "webpage": "^0.3.0"
+  }
+}
