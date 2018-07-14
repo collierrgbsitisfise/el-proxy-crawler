@@ -6,6 +6,10 @@ const {
 } = require('./utils/fooxTool.crawle');
 
 foxToolsRu()
-    .then(data => {
-        console.log(data);
-    })
+    .then(({ data }) => {
+        console.log('parse foToolsRu');
+        console.log(data.length);
+    }).catch(err => {
+        console.log('error');
+        console.log(err);
+    });

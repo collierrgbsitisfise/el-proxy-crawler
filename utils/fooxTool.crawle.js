@@ -1,6 +1,6 @@
 /**
  * Parse 'http://foxtools.ru/Proxy'
- * to get net page just add a query param
+ * to get next page just add a query param
  * just like this
  * http://foxtools.ru/Proxy?page=2 [get second page]
  * http://foxtools.ru/Proxy?page=2 [get second page]
