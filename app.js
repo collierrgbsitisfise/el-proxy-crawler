@@ -4,8 +4,11 @@
 const {
     foxToolsRu
 } = require('./utils/fooxTool.crawle');
+const {
+    freeProxySale    
+} = require('./utils/freeProxySale.crawle');
 
-foxToolsRu()
+freeProxySale()
     .then(({ data }) => {
         console.log('parse foToolsRu');
         console.log(data.length);
