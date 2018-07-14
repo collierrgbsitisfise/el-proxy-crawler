@@ -10,7 +10,7 @@
 const cheerio = require('cheerio');
 const { getHtml } = require('./common/getHtml');
 
-const baseUrl = 'http://foxtools.ru/Proxy?page=2';
+const baseUrl = 'http://foxtools.ru/Proxy';
 
 const getLastPage = (html) => {
     const $ = cheerio.load(html);

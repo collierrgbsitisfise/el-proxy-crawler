@@ -11,6 +11,7 @@
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
     "simulate-browser": "^1.2.1",
+    "underscore": "^1.9.1",
     "webpage": "^0.3.0"
   }
 }
