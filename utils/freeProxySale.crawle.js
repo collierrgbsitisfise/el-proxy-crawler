@@ -26,6 +26,7 @@ const  freeProxySale = async () => {
         let data = [];
         await ( () => new Promise((resolve, rej) => {
             Array(numOfPage).fill(0).forEach((_, i) => {
+                if (numOfPage === 0) rej();
                 parsePageNumber(i + 1)
                     .then(arr => {
                         data = [...data, ...arr]
@@ -41,6 +42,7 @@ const  freeProxySale = async () => {
             });
         }))();
 
+        console.log('freeProxySale ', data.length);
         return {
             error: false,
             data
@@ -48,7 +50,7 @@ const  freeProxySale = async () => {
     } catch (err) {
         return {
             error: true,
-            data: null
+            data: []
         }
     }
 
@@ -61,13 +63,18 @@ parsePageNumber = async (num) => {
     const $ = cheerio.load(html);
     
     $('table.table-lk tbody tr').each(function (i, tr) {
-        data.push({
-          ip: $(tr).children().eq(0).text(),
-          port: $($(tr).children().eq(2).html()).attr('src').split('=').pop(),
-          country: $(tr).children().eq(4).text(),
-          type: $(tr).children().eq(10).text(),
-          lastCheckTime: $(tr).children().eq(12).text()
-        })
+        try {
+            data.push({
+                ip: $(tr).children().eq(0).text(),
+                port: $($(tr).children().eq(2).html()).attr('src').split('=').pop(),
+                country: $(tr).children().eq(4).text(),
+                type: $(tr).children().eq(10).text(),
+                lastCheckTime: $(tr).children().eq(12).text()
+              });
+        } catch (err) {
+            //ooops..
+        }
+        
     });
 
     return data;

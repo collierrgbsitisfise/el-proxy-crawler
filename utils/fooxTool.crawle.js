@@ -18,11 +18,13 @@ const getLastPage = (html) => {
 }
 
 const  foxToolsRu = async () => {
+    console.log('FOX TOOLS');
     try {
         const html =  await getHtml(baseUrl);
         const numOfPage = Number(getLastPage(html));
         let data = [];
         await ( () => new Promise((resolve, rej) => {
+            if (numOfPage === 0) rej();
             Array(numOfPage).fill(0).forEach((_, i) => {
                 parsePageNumber(i + 1)
                     .then(arr => {
@@ -48,7 +50,7 @@ const  foxToolsRu = async () => {
     } catch (err) {
         return {
             error: true,
-            data: null
+            data: []
         }
     }
 
@@ -61,14 +63,19 @@ parsePageNumber = async (num) => {
     const $ = cheerio.load(html);
     
     $('#theProxyList tbody tr').each(function (i, tr) {
-        data.push({
-          ip: $(tr).children().eq(1).text(),
-          port: $(tr).children().eq(2).text(),
-          country: $(tr).children().eq(3).text(),
-          type: $(tr).children().eq(5).text(),
-          pingTime: $(tr).children().eq(6).text(),
-          lastCheckTime: $(tr).children().eq(7).text()
-        })
+        try {
+            data.push({
+                ip: $(tr).children().eq(1).text(),
+                port: $(tr).children().eq(2).text(),
+                country: $(tr).children().eq(3).text(),
+                type: $(tr).children().eq(5).text(),
+                pingTime: $(tr).children().eq(6).text(),
+                lastCheckTime: $(tr).children().eq(7).text()
+              })
+        } catch (err) {
+            //ooops...
+        }
+
     });
 
     return data;
