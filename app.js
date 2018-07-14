@@ -31,6 +31,24 @@ Promise.all([
 
     console.log('unique values');
     console.log(_.uniq(total, p => p.ip).length);
+    require('fs').writeFile(
+
+        './proxy.json',
+    
+        JSON.stringify(_.uniq(total, p => p.ip).map(it => {
+           return {
+               ip: it.ip.trim(),
+               port: it.port.trim(),
+               country: it.country.trim()
+           } 
+        })),
+    
+        function (err) {
+            if (err) {
+                console.error('Crap happens');
+            }
+        }
+    );
 }).catch(err => {
     console.log(err);
 })
