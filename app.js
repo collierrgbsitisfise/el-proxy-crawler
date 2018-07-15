@@ -1,54 +1,63 @@
 const _ = require('underscore');
+const mongoose = require('mongoose');
+const cron = require('node-cron');
 
 const {
-    foxToolsRu
-} = require('./utils/fooxTool.crawle');
-
-const {
-    freeProxySale    
-} = require('./utils/freeProxySale.crawle');
-
-const {
+    foxToolsRu,
+    freeProxySale,
     seoToolStation
-} = require('./utils/seoToolStation.crawle');
+} = require('./utils');
+const Proxy = require('./models/Proxy.model');
 
-Promise.all([
-    freeProxySale(),
-    foxToolsRu(),
-    seoToolStation()
-]).then((data) => {
-    const dataFreeProxySale = data[0].data;
-    const datafoxToolsRu = data[1].data;
-    const dataSeoToolStation = data[2].data;
+mongoose.connect('mongodb://admin:vadim1@ds247330.mlab.com:47330/easy-links-db', { useNewUrlParser: true }, async (err) => {
+    if (err) {
+        return;
+    }
 
-    const total = [
-        ...dataFreeProxySale,
-        ...datafoxToolsRu,
-        ...dataSeoToolStation
-    ];
-    console.log('Parse Both');
-    console.log(total.length);
+    cron.schedule('0 0 0 * * *', async function(){
+        try {
+            const allProxy = await getAllProxy();
+            for (let prox of allProxy) {
+                try {
+                    const newProxy = new Proxy(prox);
+                    await newProxy.save();
+                } catch (err) {
+                    // console.log('err in saving');
+                }
 
-    console.log('unique values');
-    console.log(_.uniq(total, p => p.ip).length);
-    require('fs').writeFile(
-
-        './proxy.json',
-    
-        JSON.stringify(_.uniq(total, p => p.ip).map(it => {
-           return {
-               ip: it.ip.trim(),
-               port: it.port.trim(),
-               country: it.country.trim()
-           } 
-        })),
-    
-        function (err) {
-            if (err) {
-                console.error('Crap happens');
             }
+        } catch (err) {
+            // console.log('GET ALL PROXY IN CRON JOB');
+            // console.log(err);
         }
-    );
-}).catch(err => {
-    console.log(err);
-})
+    });
+});
+
+const getAllProxy = () => new Promise((resolve, reject) => {
+    Promise.all([
+        freeProxySale(),
+        foxToolsRu(),
+        seoToolStation()
+    ]).then((data) => {
+        const dataFreeProxySale = data[0].data;
+        const datafoxToolsRu = data[1].data;
+        const dataSeoToolStation = data[2].data;
+
+        const total = [
+            ...dataFreeProxySale,
+            ...datafoxToolsRu,
+            ...dataSeoToolStation
+        ];
+
+        resolve(_.uniq(total, p => p.ip).map(it => {
+            return {
+                ip: it.ip.trim(),
+                port: it.port.trim(),
+                country: it.country.trim(),
+                time: new Date()
+            }
+        }));
+    }).catch(err => {
+        reject(err);
+    });
+});

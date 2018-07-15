@@ -27,7 +27,6 @@ const  seoToolStation = async () => {
             }
         });
     
-        console.log('seoToolStation ', data.length);
         return {
             error: false,
             data

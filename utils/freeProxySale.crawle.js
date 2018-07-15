@@ -42,7 +42,6 @@ const  freeProxySale = async () => {
             });
         }))();
 
-        console.log('freeProxySale ', data.length);
         return {
             error: false,
             data

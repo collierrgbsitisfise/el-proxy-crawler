@@ -18,7 +18,6 @@ const getLastPage = (html) => {
 }
 
 const  foxToolsRu = async () => {
-    console.log('FOX TOOLS');
     try {
         const html =  await getHtml(baseUrl);
         const numOfPage = Number(getLastPage(html));
