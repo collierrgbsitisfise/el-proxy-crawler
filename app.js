@@ -17,6 +17,7 @@ mongoose.connect('mongodb://admin:vadim1@ds247330.mlab.com:47330/easy-links-db',
     cron.schedule('0 0 0 * * *', async function(){
         try {
             const allProxy = await getAllProxy();
+            await Proxy.remove({}).exec();
             for (let prox of allProxy) {
                 try {
                     const newProxy = new Proxy(prox);
