@@ -4,6 +4,10 @@
   "description": "Scrape proxy",
   "main": "app.js",
   "author": "vadim.vicolaev.v@gmail.com",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "pm2-start": "pm2 start --name el-proxy-crawler npm -- run dev"
+  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "express": "latest",
