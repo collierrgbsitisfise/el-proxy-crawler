@@ -12,6 +12,9 @@ const proxySchema = new SchemaM({
   country: {
     type: String,
   },
+  type: {
+    type: String,
+  },
   time: {
     type: Number,
     default: new Date()

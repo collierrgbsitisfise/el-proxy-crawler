@@ -1,5 +1,6 @@
 const _ = require('underscore');
 const mongoose = require('mongoose');
+const rp = require("request-promise");
 const cron = require('node-cron');
 
 const {
@@ -20,16 +21,23 @@ mongoose.connect('mongodb://admin:vadim1@ds247330.mlab.com:47330/easy-links-db',
             await Proxy.remove({}).exec();
             for (let prox of allProxy) {
                 try {
+                    result = await rp.get({
+                        url: 'http://google.com',
+                        method: 'GET',
+                        timeout: 3000,
+                        followRedirect: true,
+                        proxy: `http://${prox.ip}:${prox.port}`
+                      });
                     const newProxy = new Proxy(prox);
                     await newProxy.save();
                 } catch (err) {
-                    // console.log('err in saving');
+                    console.log('err in saving for proxy ', prox.ip);
                 }
 
             }
         } catch (err) {
-            // console.log('GET ALL PROXY IN CRON JOB');
-            // console.log(err);
+            console.log('ERRO TRYC1');
+            console.log(err);
         }
     });
 });
@@ -54,6 +62,7 @@ const getAllProxy = () => new Promise((resolve, reject) => {
             return {
                 ip: it.ip.trim(),
                 port: it.port.trim(),
+                type: it.type.trim(),
                 country: it.country.trim(),
                 time: new Date()
             }

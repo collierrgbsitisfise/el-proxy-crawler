@@ -20,6 +20,7 @@ const  seoToolStation = async () => {
                 data.push({
                     ip: $(tr).children().eq(1).text(),
                     port: $(tr).children().eq(2).text(),
+                    type: 'http',
                     country: $(tr).children().eq(3).text(),
                   })
             } catch (err) {
